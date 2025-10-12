@@ -105,6 +105,7 @@ async def extract_user_id_from_token(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credentials_exception
 
+
 # Extract the user_email from the token
 async def extract_user_email_from_token(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
@@ -371,14 +372,10 @@ async def generation_streaming(
         if not existing_session:
             session_id = str(uuid.uuid4())
             await database.sessions.insert_one({
-                "user_id":
-                ehr_id,
-                "session_id":
-                session_id,
-                "start_time":
-                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "end_time":
-                None
+                "user_id": ehr_id,
+                "session_id": session_id,
+                "start_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "end_time": None
             })
             logger.info(f"Created new session {session_id} for user {ehr_id}")
         else:
@@ -407,7 +404,7 @@ async def generation_streaming(
         elif queryModeType == 'think':
             graph = build_graph_think(think_mode_llm, memory)
             response = await graph.ainvoke(input=state, config=config)
-            print("resonse,", response)
+            print("resonse", response)
             logging.info("Generated Answer from Graph")
             dialog_states = response["dialog_state"]
             dialog_state = dialog_states[
