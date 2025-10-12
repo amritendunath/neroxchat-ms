@@ -44,7 +44,6 @@
     #     return x
     # agent_runnable = combine_runnable | prompt_template | llm.bind_tools(tools)
 
-
 from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_core.runnables import RunnableLambda, RunnableMap
 from typing import Dict, Any
