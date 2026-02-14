@@ -19,3 +19,4 @@ EXPOSE 8080
 
 # Define the command to start the application using the dynamic port logic in main.py
 CMD ["python", "src/main.py"]
+
