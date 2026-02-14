@@ -111,7 +111,7 @@ jobs:
             
             # Option 2: Generate FULL .env file from GitHub Secrets on the fly
             mkdir -p $HOME/envs
-            cat <<EOF > $HOME/envs/auth.env
+            cat <<'EOF' > $HOME/envs/auth.env
             GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
@@ -129,7 +129,7 @@ jobs:
             AWS_SES=ses
             
             REDIS_HOST=${{ secrets.REDIS_HOST }}
-            REDIS_PORT=${{ secrets.REDIS_PORT }}
+            REDIS_PORT=${{ secrets.REDIS_PORT || '6379' }}
             REDIS_DB=${{ secrets.REDIS_DB }}
             REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             
@@ -140,7 +140,7 @@ jobs:
             MICROSOFT_CLIENT_ID=${{ secrets.MICROSOFT_CLIENT_ID }}
             MICROSOFT_CLIENT_SECRET=${{ secrets.MICROSOFT_CLIENT_SECRET }}
             
-            PORT=${{ secrets.PORT }}
+            PORT=${{ secrets.PORT || '8080' }}
             ENVIRONMENT=production
             EOF
 
@@ -179,7 +179,7 @@ jobs:
             
             # Option 2: Generate FULL .env file from GitHub Secrets on the fly
             mkdir -p $HOME/envs
-            cat <<EOF > $HOME/envs/agent.env
+            cat <<'EOF' > $HOME/envs/agent.env
             JWT_SECRET_KEY=${{ secrets.JWT_SECRET }}
             MONGODB_URI=${{ secrets.AGENT_MONGODB_URI }}
             OPEN_API_KEY=${{ secrets.OPEN_API_KEY }}
@@ -200,12 +200,12 @@ jobs:
             AWS_SES=${{ secrets.AWS_SES }}
             
             CHROMADB_HOST=${{ secrets.CHROMADB_HOST }}
-            CHROMADB_PORT=${{ secrets.CHROMADB_PORT }}
+            CHROMADB_PORT=${{ secrets.CHROMADB_PORT || '8000' }}
             
             LOCAL_URL=${{ secrets.LOCAL_URL }}
             PROD_URL=${{ secrets.PROD_URL }}
             
-            PORT=${{ secrets.PORT }}
+            PORT=${{ secrets.PORT || '8080' }}
             ENVIRONMENT=production
             EOF
 
