@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class Database:
     def __init__(self):
         self.client = MongoClient(
-            os.environ.get("MONGODBURI"), server_api=ServerApi("1")
+            os.environ.get("MONGODB_URI"), server_api=ServerApi("1")
         )  # Use ServerApi for compatibility
         self.db = self.client["sathi_chatbot"]  # Different database name for sathi
         # Collections
