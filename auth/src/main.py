@@ -3,7 +3,7 @@ import sys
 import logging
 import uvicorn
 from datetime import timedelta
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuth
