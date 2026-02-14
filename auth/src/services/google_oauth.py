@@ -127,8 +127,10 @@ class GoogleOAuth:
 
         except Exception as e:
             self.logger.error(f"Error during Google authorization: {str(e)}")
-            frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
-            error_redirect = f"{frontend_url}/auth-callback?error=Authentication+failed"
+            frontend_url = os.environ.get("FRONTEND_URL", "https://www.neroxchat.com")
+            # Create a safe error message (simple string replacement to avoid import urllib)
+            safe_error = str(e).replace(" ", "+")
+            error_redirect = f"{frontend_url}/auth-callback?error={safe_error}"
             return RedirectResponse(error_redirect)
 
 

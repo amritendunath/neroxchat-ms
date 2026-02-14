@@ -28,8 +28,16 @@ logger.addHandler(handler)
 
 def create_app():
     
+    # Determine if we are in production to set secure cookie flags
+    is_production = os.environ.get("ENVIRONMENT") == "production"
+    
     middleware = [
-        Middleware(SessionMiddleware, secret_key=os.environ.get("JWT_SECRET", os.urandom(24).hex())),
+        Middleware(
+            SessionMiddleware, 
+            secret_key=os.environ.get("JWT_SECRET", os.urandom(24).hex()),
+            https_only=is_production, 
+            same_site="lax"
+        ),
     ]
     app = FastAPI(middleware=middleware)
     
