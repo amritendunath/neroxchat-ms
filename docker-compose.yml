@@ -3,21 +3,21 @@ version: "3.8"
 services:
   agent_service:
     build:
-      context: ./agent_service
+      context: ./agent
       dockerfile: Dockerfile
     ports:
       - "8001:8001"
-    env_file: ./agent_service/.env
+    env_file: ./agent/.env
     networks:
       - app_network
 
   auth_service:
     build:
-      context: ./auth_service
+      context: ./auth
       dockerfile: Dockerfile
     ports:
       - "5004:5004"
-    env_file: ./auth_service/.env
+    env_file: ./auth/.env
     networks:
       - app_network
 
