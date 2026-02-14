@@ -107,12 +107,48 @@ jobs:
           script: |
             docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
             IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/auth:latest
+            
+            # Option 2: Generate FULL .env file from GitHub Secrets on the fly
+            mkdir -p $HOME/envs
+            cat <<EOF > $HOME/envs/auth.env
+            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            FRONTEND_URL=${{ secrets.FRONTEND_URL }}
+            GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}
+            
+            TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}
+            TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}
+            TWILIO_VERIFY_SERVICE_ID=${{ secrets.TWILIO_VERIFY_SERVICE_ID }}
+            
+            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION=${{ secrets.AWS_REGION }}
+            SES_SENDER_EMAIL=${{ secrets.SES_SENDER_EMAIL }}
+            AWS_SES=ses
+            
+            REDIS_HOST=${{ secrets.REDIS_HOST }}
+            REDIS_PORT=${{ secrets.REDIS_PORT }}
+            REDIS_DB=${{ secrets.REDIS_DB }}
+            REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+            
+            MONGODBURI=${{ secrets.MONGODBURI }}
+            
+            TWITTER_CLIENT_ID=${{ secrets.TWITTER_CLIENT_ID }}
+            TWITTER_CLIENT_SECRET=${{ secrets.TWITTER_CLIENT_SECRET }}
+            MICROSOFT_CLIENT_ID=${{ secrets.MICROSOFT_CLIENT_ID }}
+            MICROSOFT_CLIENT_SECRET=${{ secrets.MICROSOFT_CLIENT_SECRET }}
+            
+            PORT=${{ secrets.PORT }}
+            ENVIRONMENT=production
+            EOF
+
             docker pull $IMAGE_NAME
-            docker stop auth_service || true
-            docker rm auth_service || true
-            docker run -d --name auth_service \
+            docker stop auth || true
+            docker rm auth || true
+            docker run -d --name auth \
               --restart unless-stopped \
-              --env-file /home/ec2-user/envs/auth_service.env \
+              --env-file $HOME/envs/auth.env \
               --network mynet \
               $IMAGE_NAME
 
@@ -138,12 +174,45 @@ jobs:
           script: |
             docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
             IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/agent:latest
+            
+            # Option 2: Generate FULL .env file from GitHub Secrets on the fly
+            mkdir -p $HOME/envs
+            cat <<EOF > $HOME/envs/agent.env
+            JWT_SECRET_KEY=${{ secrets.JWT_SECRET }}
+            MONGODB_URI=${{ secrets.AGENT_MONGODB_URI }}
+            OPEN_API_KEY=${{ secrets.OPEN_API_KEY }}
+            OPEN_API_BASE=${{ secrets.OPEN_API_BASE }}
+            OPEN_API_MODEL_NAME_QUICK=${{ secrets.OPEN_API_MODEL_NAME_QUICK }}
+            OPEN_API_MODEL_NAME_THINK=${{ secrets.OPEN_API_MODEL_NAME_THINK }}
+            GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+            GEMINI_MODEL=${{ secrets.GEMINI_MODEL }}
+            LANGSMITH_TRACING=${{ secrets.LANGSMITH_TRACING }}
+            LANGCHAIN_ENDPOINT=${{ secrets.LANGCHAIN_ENDPOINT }}
+            LANGCHAIN_API_KEY=${{ secrets.LANGCHAIN_API_KEY }}
+            LANGCHAIN_PROJECT=${{ secrets.LANGCHAIN_PROJECT }}
+            
+            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION=${{ secrets.AWS_REGION }}
+            SES_SENDER_EMAIL=${{ secrets.SES_SENDER_EMAIL }}
+            AWS_SES=${{ secrets.AWS_SES }}
+            
+            CHROMADB_HOST=${{ secrets.CHROMADB_HOST }}
+            CHROMADB_PORT=${{ secrets.CHROMADB_PORT }}
+            
+            LOCAL_URL=${{ secrets.LOCAL_URL }}
+            PROD_URL=${{ secrets.PROD_URL }}
+            
+            PORT=${{ secrets.PORT }}
+            ENVIRONMENT=production
+            EOF
+
             docker pull $IMAGE_NAME
-            docker stop agent_service || true
-            docker rm agent_service || true
-            docker run -d --name agent_service \
+            docker stop agent || true
+            docker rm agent || true
+            docker run -d --name agent \
               --restart unless-stopped \
-              --env-file /home/ec2-user/envs/agent_service.env \
+              --env-file $HOME/envs/agent.env \
               --network mynet \
               $IMAGE_NAME
 
