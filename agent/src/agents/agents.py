@@ -48,6 +48,7 @@ from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_core.runnables import RunnableLambda, RunnableMap
 from typing import Dict, Any
 
+
 def get_runnable(llm, tools, agent_prompt):
     prompt_template = ChatPromptTemplate.from_messages(
         [
