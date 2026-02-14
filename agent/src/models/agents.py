@@ -12,6 +12,7 @@ class ToPrimaryBookingAssistant(BaseModel):
         type="string",
     )
 
+
 # class ToGetInfo(BaseModel):
 #     """Get information of doctor availability via name or specialization"""
 
