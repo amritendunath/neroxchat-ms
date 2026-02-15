@@ -13,6 +13,7 @@ from langchain_community.tools import DuckDuckGoSearchRun
 web_search_tool = DuckDuckGoSearchRun()
 
 
+
 chroma_host=os.environ.get("CHROMADB_HOST")
 chroma_port=os.environ.get("CHROMADB_PORT")
 
